@@ -1,0 +1,38 @@
+#RedirectMatch .* https://topos.grid.sara.nl/error/HTTP_SERVICE_UNAVAILABLE.html.var
+#Deny from All
+#SetOutputFilter DEFLATE
+
+AddType application/x-x509-ca-cert pem
+
+php_flag display_errors on
+php_flag display_startup_errors on
+
+RewriteEngine On
+
+# Forbidden:
+#RewriteCond %{REMOTE_ADDR} !^145\.100\.(?:6|7|15)\.
+#RewriteRule ^realms/$ - [F]
+
+# Manual redirect:
+RewriteRule ^reference http://docs.google.com/View?id=dcmrvnx3_23ggxh2pgp [R=307,L]
+
+# Directory redirects:
+RewriteRule ^pools$ /4/pools/ [R=301,L]
+RewriteRule ^pools/([\w\-.]+)$ /4/pools/$1/ [R=301,L]
+RewriteRule ^pools/([\w\-.]+)/locks$ /4/pools/$1/locks/ [R=301,L]
+RewriteRule ^pools/([\w\-.]+)/tokens$ /4/pools/$1/tokens/ [R=301,L]
+
+# Script redirects:
+RewriteRule ^newPool/?$ /4/newPool.php [L]
+RewriteRule ^phpinfo(/.*)?$ /4/phpinfo.php [L]
+RewriteRule ^pools/$ /4/pools.php/$1 [L]
+RewriteRule ^pools/([\w\-.]+)/$ /4/pool.php/$1 [L]
+RewriteRule ^pools/([\w\-.]+)/nextToken$ /4/nextToken.php/$1 [L]
+RewriteRule ^pools/([\w\-.]+)/tarball$ /4/tarball.php/$1 [L]
+RewriteRule ^pools/([\w\-.]+)/nextToken2$ /4/nextToken2.php/$1 [L]
+RewriteRule ^pools/([\w\-.]+)/locks/$ /4/locks.php/$1 [L]
+RewriteRule ^pools/([\w\-.]+)/locks/([0-9A-Fa-f\-]+)$ /4/lock.php/$1/$2 [L]
+RewriteRule ^pools/([\w\-.]+)/progress$ /4/progress.php/$1/$2 [L]
+RewriteRule ^pools/([\w\-.]+)/tokens/$ /4/tokens.php/$1\ [L]
+RewriteRule ^pools/([\w\-.]+)/tokens/(\d+)$ /4/token.php/$1/$2 [L]
+

@@ -1,0 +1,7 @@
+# eclipse stuff:
+.buildpath
+.project
+.settings
+
+# temporary backups:
+*.bak

@@ -1,0 +1,58 @@
+@CHARSET "UTF-8";
+
+/* Table of contents */
+table.toc, table.progress {
+  border-collapse: collapse;
+  empty-cells: show;
+}
+table.toc td,
+table.toc th {
+	border: 1px solid #ccc;
+}
+table.toc th {
+  border-top: 0;
+}
+table.toc td {
+  text-align: right;
+}
+table.toc tr.collection td.name {
+  font-weight: bold;
+}
+table.toc .delete { border: 0; }
+table.toc .delete input {
+  font-weight: bold;
+  color: white;
+  background-color: red;
+}
+
+/* Progress bar stuff */
+table.progress {
+	border: 1px solid black;
+}
+table.progress td {
+	border: 0;
+  padding: 0;
+  margin: 0;
+  text-align: center;
+  font-weight: bold;
+}
+table.progress td.done {
+  background-color: navy;
+  color: white;
+}
+
+#div_index {
+  float: right;
+}
+
+table.lockinfo {
+  border-collapse: collapse;
+  empty-cells: show;
+}
+table.lockinfo th {
+  text-align: left;
+}
+table.lockinfo td,
+table.lockinfo th {
+  border: 1px solid #ccc;
+}
