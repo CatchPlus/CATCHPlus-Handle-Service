@@ -1,0 +1,123 @@
+@CHARSET "UTF-8";
+
+/*
+ * Copyright ©2009 SARA Computing and Networking Services
+ *                 Amsterdam, the Netherlands
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may
+ * not use this file except in compliance with the License. You may obtain
+ * a copy of the License at <http://www.apache.org/licenses/LICENSE-2.0>
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/* Body */
+body {
+  background: transparent url(nbicbackground.png) no-repeat
+}
+
+
+/* Table of contents */
+table.toc {
+  border-collapse: collapse;
+  empty-cells: show;
+}
+table.toc td,
+table.toc th {
+  border: 1px solid #ccc;
+  padding: 0 3px;
+}
+table.toc th {
+  border-top: 0;
+}
+table.toc tr.collection td {
+  font-weight: bold;
+}
+table.toc .name, table.toc .description { text-align: left; }
+table.toc .size { text-align: right; }
+table.toc td.name, table.toc td.size { font-family: monospace; }
+
+
+/* Usage statistics */
+table.usagestats {
+  border-collapse: collapse;
+  empty-cells: show;
+}
+table.usagestats td,
+table.usagestats th {
+  border: 1px solid #ccc;
+  padding: 0 3px;
+}
+table.usagestats th {
+  border-top: 0;
+}
+table.usagestats .date { text-align: left; }
+table.usagestats .walltime { text-align: right; }
+
+
+/* Application params table stuff */
+table.applicationparams {
+  border-collapse: collapse;
+}
+
+table.applicationparams td {
+  border: 1px solid #cccccc
+}
+
+
+/* Header and footer stuff */
+div#header {
+  border-top: 1px solid #FABD23;
+  border-bottom: 1px solid #FABD23;
+  background-color: white;
+  /*float: left;*/
+  clear: both;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+div#header h1 {
+  /*float: left;*/
+  margin: 3px;
+}
+
+div#header p {
+  /*display: block;*/
+  float: right;
+  /*margin-top: 13px;*/
+  font-family: sans-serif;
+  font-variant: small-caps;
+  font-weight: bold;
+}
+
+div#header p a {
+  text-decoration: none;
+}
+
+div#header p img {
+  vertical-align: middle;
+}
+
+div#footer {
+  border-top: 1px solid #FABD23;
+  border-bottom: 1px solid #FABD23;
+  margin: 0.6em 0 1em;
+  background: white url(poweredbysara.png) no-repeat center left;
+  height: 31px;
+  width: 100%;
+  clear: both;
+  /*float: left;*/
+}
+
+div#changeauth {
+	float: right;
+}
+
+div#changeauth a {
+	text-decoration: none;
+}
+
