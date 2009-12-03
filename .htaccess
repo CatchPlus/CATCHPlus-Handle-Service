@@ -15,6 +15,8 @@ php_flag display_startup_errors on
 #RewriteRule ^pools/([\w\-.]+)/tokens$ /4/pools/$1/tokens/ [R=301,L]
 
 # Script redirects:
+RewriteRule ^/$ /catchplus/index.php [L]
+
 #RewriteRule ^newPool/?$ /4/newPool.php [L]
 #RewriteRule ^phpinfo(/.*)?$ /4/phpinfo.php [L]
 #RewriteRule ^pools/$ /4/pools.php/$1 [L]
