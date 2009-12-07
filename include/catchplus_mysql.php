@@ -19,16 +19,16 @@
  * File documentation.
  * @todo - The call register_shutdown_function at the end of this document
  * doesn't look too good.
- * @package CatchPlus
+ * @package CP
  */
 
 /**
  * A MySQL exception.
- * This exception is thrown by some MySQL related methods in {@link CatchPlus
- * class CatchPlus }.
- * @package CatchPlus
+ * This exception is thrown by some MySQL related methods in {@link CP
+ * class CP }.
+ * @package CP
  */
-class CatchPlus_MySQL_Exception extends Exception {}
+class CP_MySQL_Exception extends Exception {}
 
 
 /**
@@ -36,17 +36,17 @@ class CatchPlus_MySQL_Exception extends Exception {}
  * A special case of a MySQL exception: a transient error occured, e.g. because
  * a deadlock was detected. The caller should rollback the transaction and try
  * again.
- * @package CatchPlus
+ * @package CP
  */
-class CatchPlus_Retry_Exception extends CatchPlus_MySQL_Exception {}
+class CP_Retry_Exception extends CP_MySQL_Exception {}
 
 
 /**
  * Contains all MySQL related methods.
  * This class is mostly just a namespace.
- * @package CatchPlus
+ * @package CP
  */
-class CatchPlus_MySQL {
+class CP_MySQL {
   
   
   /**
@@ -64,7 +64,7 @@ class CatchPlus_MySQL {
         'localhost', 'portal', 'V0iiYF9C', 'portal_dev'
       );
       if ( !self::$mysql )
-        throw new CatchPlus_MySQL_Exception(mysqli_connect_error());
+        throw new CP_MySQL_Exception(mysqli_connect_error());
     }
     return self::$mysql;
   }
@@ -78,8 +78,8 @@ class CatchPlus_MySQL {
   public static function real_query($query) {
     if (! self::mysql()->real_query($query)) {
       if (self::mysql()->errno == 1205 || self::mysql()->errno == 1213)
-        throw new CatchPlus_Retry_Exception( self::mysql()->error );
-      throw new CatchPlus_MySQL_Exception( self::mysql()->error, self::mysql()->errno );
+        throw new CP_Retry_Exception( self::mysql()->error );
+      throw new CP_MySQL_Exception( self::mysql()->error, self::mysql()->errno );
     }
   }
 
@@ -92,8 +92,8 @@ class CatchPlus_MySQL {
   public static function query($query) {
     if ( !( $retval = self::mysql()->query($query) ) ) {
       if (self::mysql()->errno == 1205 || self::mysql()->errno == 1213)
-        throw new CatchPlus_Retry_Exception(self::mysql()->error);
-      throw new CatchPlus_MySQL_Exception( self::mysql()->error, self::mysql()->errno );
+        throw new CP_Retry_Exception(self::mysql()->error);
+      throw new CP_MySQL_Exception( self::mysql()->error, self::mysql()->errno );
     }
     return $retval;
   }
@@ -111,11 +111,11 @@ class CatchPlus_MySQL {
   }
 
 
-  /*
-   * Fabricates a new Unique Database Object ID.
-   * @throws object PeopleException E_MYSQL_ERROR
-   * @return int a new unique ID.
-   */
+  ///*
+  // * Fabricates a new Unique Database Object ID.
+  // * @throws object PeopleException E_MYSQL_ERROR
+  // * @return int a new unique ID.
+  // */
   //public static function uid() {
   //  self::real_query('INSERT INTO `JobId` () VALUES ()');
   //  $retval = self::mysql()->insert_id;
@@ -124,5 +124,5 @@ class CatchPlus_MySQL {
   //}
 
 
-} // class CatchPlus_MySQL
+} // class CP_MySQL
 

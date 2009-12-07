@@ -17,13 +17,13 @@
 
 /**
  * File documentation.
- * @package CatchPlus
+ * @package CP
  */
 
 /**
- * @package CatchPlus
+ * @package CP
  */
-class CatchPlus {
+class CP {
 
 
 /**
@@ -81,4 +81,19 @@ public static function urlbase() {
 }
 
 
-} // class CatchPlus
+/**
+ * @param $handle string
+ * @return bool
+ * @todo optimization by preparsed statements.
+ */
+public static function handleDelete($handle) {
+  $eschandle = CP_MySQL::escape_string($handle);
+  CP_MySQL::real_query(<<<EOS
+DELETE FROM `handles` WHERE `handle` = $eschandle;
+EOS
+  );
+  return CP_MySQL::mysql()->affected_rows;
+}
+
+
+} // class CP
