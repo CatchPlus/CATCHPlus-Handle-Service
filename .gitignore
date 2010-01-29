@@ -2,6 +2,11 @@
 .buildpath
 .project
 .settings
+.htpasswd
 
 # temporary backups:
 *.bak
+
+# other:
+DEADJOE
+.#.*

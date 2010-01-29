@@ -25,31 +25,31 @@
  */
 class CP {
 
+  
+const PORTAL_URL = '/catchplus/';
 
 /**
  * @param $title string title in UTF-8
  * @return string
  */
 public static function html_start($title) {
-  $t_title = htmlspecialchars($title, ENT_COMPAT, "UTF-8");
+  $title = REST::htmlspecialchars($title);
   $t_index = REST::urlencode( dirname( $_SERVER['REQUEST_URI'] ) );
   if ($t_index != '/') $t_index .= '/';
-  $t_stylesheet = self::urlbase() . 'style.css';
-  $t_icon       = self::urlbase() . 'favicon.png';
-  return REST::xml_header() . <<<EOS
+  $t_index = REST::htmlspecialchars($t_index);
+  $portalurl = self::PORTAL_URL;
+  $retval = REST::xml_header() . <<<EOS
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-us">
 <head>
-  <title>{$t_title}</title>
-  <link rel="stylesheet" type="text/css" href="{$t_stylesheet}" />
-  <link rel="index" rev="child" type="application/xhtml+xml" href="{$t_index}"/>
-  <link rel="icon" type="image/png" href="{$t_icon}" />
+  <title>{$title}</title>
+  <link rel="stylesheet" type="text/css" href="{$portalurl}style.css" />
+  <link rel="index" rev="child" type="application/xhtml+xml" href="{$t_index}" />
 </head><body>
-<div id="div_header">
-<div id="div_index"><a rel="index" rev="child" href="{$t_index}">index</a></div>
-<h1>{$t_title}</h1>
-</div>
+<div id="header"><p><a rel="index" rev="child" href="{$t_index}"><img border="0" src="{$portalurl}dirup.png"/> UP</a></p>
+<h1>{$title}</h1></div>
 EOS;
+  return $retval;
 }
 
 
@@ -58,41 +58,22 @@ EOS;
  * @return string
  */
 public static function html_end() {
-  return '</body></html>';
-}
-
-
-/**
- * Cache for urlbase().
- * @var string
- */
-private static $URLBASE = null;
-/**
- * Returns the base URI.
- * The base URI is 'protocol://server.name:port'
- * @return string
- */
-public static function urlbase() {
-  if ( is_null( self::$URLBASE ) ) {
-    //DAV::debug('$_SERVER: ' . var_export($_SERVER, true));
-    self::$URLBASE = REST::urlbase() . '/catchplus/';
-  }
-  return self::$URLBASE;
-}
-
-
-/**
- * @param $handle string
- * @return bool
- * @todo optimization by preparsed statements.
- */
-public static function handleDelete($handle) {
-  $eschandle = CP_MySQL::escape_string($handle);
-  CP_MySQL::real_query(<<<EOS
-DELETE FROM `handles` WHERE `handle` = $eschandle;
-EOS
-  );
-  return CP_MySQL::mysql()->affected_rows;
+  $retval = '<div id="footer">';
+//    if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+//      if ($_SERVER['SERVER_PORT'] == self::PORT_SSL) {
+//        $switchto = 'X.509 Client Certificate Authentication';
+//        $url = 'https://' . $_SERVER['SERVER_NAME'] . ':' . self::PORT_SSL_CSA .
+//          $_SERVER['REQUEST_URI'];
+//      } elseif ($_SERVER['SERVER_PORT'] == self::PORT_SSL_CSA) {
+//        $switchto = 'Username/Password Authentication';
+//        $url = 'https://' . $_SERVER['SERVER_NAME'] . ':' . self::PORT_SSL .
+//          $_SERVER['REQUEST_URI'];
+//      }
+//      $retval .= '<div id="changeauth"><a href="' .
+//        REST::htmlspecialchars($url) . '">Switch to ' . $switchto . '</a></div>';
+//    }
+  $retval .= '</div></body></html>';
+  return $retval;
 }
 
 

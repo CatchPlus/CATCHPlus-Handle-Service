@@ -1,14 +1,24 @@
 php_flag display_errors on
 php_flag display_startup_errors on
 
+AuthType Basic
+AuthName "CATCHPlus Handle System RESTful Web Service"
+# (Following line optional)
+AuthBasicProvider file
+AuthUserFile /space/catchplus/www/.htpasswd
+Require valid-user
+
+RewriteEngine on
+
 # Forbidden:
 #RewriteCond %{REMOTE_ADDR} !^145\.100\.(?:6|7|15)\.
 #RewriteRule ^realms/$ - [F]
 
 # Manual redirect:
-#RewriteRule ^reference http://docs.google.com/View?id=dcmrvnx3_23ggxh2pgp [R=307,L]
+RewriteRule ^reference_manual http://docs.google.com/Doc?docid=0AV1_-ddi0ofuZGNtcnZueDNfNjdyODU2NXFjeg&hl=en [R=307,L]
 
 # Directory redirects:
+#RewriteRule ^(\d+)$ /catchplus/$1/ [R=301,L]
 #RewriteRule ^pools$ /4/pools/ [R=301,L]
 #RewriteRule ^pools/([\w\-.]+)$ /4/pools/$1/ [R=301,L]
 #RewriteRule ^pools/([\w\-.]+)/locks$ /4/pools/$1/locks/ [R=301,L]
@@ -16,7 +26,9 @@ php_flag display_startup_errors on
 
 # Script redirects:
 RewriteRule ^/$ /catchplus/index.php [L]
-
+#RewriteRule ^((?:[^./]+\.)*[^./]+)/(.*)$ /catchplus/handle.php/$1/$2 [L]
+RewriteRule ^(\d+)/(.+)$ /catchplus/handle.php/$1/$2 [L]
+RewriteRule ^search$ /catchplus/search.php [L]
 #RewriteRule ^newPool/?$ /4/newPool.php [L]
 #RewriteRule ^phpinfo(/.*)?$ /4/phpinfo.php [L]
 #RewriteRule ^pools/$ /4/pools.php/$1 [L]
@@ -30,3 +42,12 @@ RewriteRule ^/$ /catchplus/index.php [L]
 #RewriteRule ^pools/([\w\-.]+)/tokens/$ /4/tokens.php/$1\ [L]
 #RewriteRule ^pools/([\w\-.]+)/tokens/(\d+)$ /4/token.php/$1/$2 [L]
 
+# Protect handle.php:
+# The following three lines guarantee that handle.php is invoked with a
+# syntactically valid handle in the $PATH_INFO:
+# If handle.php is invoked...
+RewriteCond %{REQUEST_URI} ^/catchplus/handle.php
+# without a proper handle in its PATH_INFO...
+RewriteCond %{REQUEST_URI} !^/catchplus/handle.php/\d+/.+
+# then return an HTTP/1.1 403 Forbidden:
+RewriteRule .* - [F]

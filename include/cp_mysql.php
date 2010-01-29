@@ -60,8 +60,9 @@ class CP_MySQL {
    */
   public static function mysql() {
     if (is_null(self::$mysql)) {
+      global $CP_PASSWD;
       self::$mysql = new mysqli(
-        'localhost', 'portal', 'V0iiYF9C', 'portal_dev'
+        'localhost', 'handle_bg', $CP_PASSWD, 'handle_625_beeldengeluid'
       );
       if ( !self::$mysql )
         throw new CP_MySQL_Exception(mysqli_connect_error());
@@ -78,7 +79,7 @@ class CP_MySQL {
   public static function real_query($query) {
     if (! self::mysql()->real_query($query)) {
       if (self::mysql()->errno == 1205 || self::mysql()->errno == 1213)
-        throw new CP_Retry_Exception( self::mysql()->error );
+        throw new CP_Retry_Exception( self::mysql()->error, self::mysql()->errno );
       throw new CP_MySQL_Exception( self::mysql()->error, self::mysql()->errno );
     }
   }

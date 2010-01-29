@@ -22,7 +22,7 @@ if (!empty($_SERVER['HTTP_IF_MODIFIED_SINCE']))
   REST::fatal(REST::HTTP_NOT_MODIFIED);
   
 $directory = RESTDir::factory()->setHeaders('Description');
-$directory->line( 'pools/',               array( 'Description' => 'A list of all pools. Forbidden for most users, for security reasons.' ) );
-$directory->line( 'newPool',              array( 'Description' => 'Redirects to a new, empty pool.' ) );
-$directory->line( 'reference_manual', array( 'Description' => 'The official reference manual for this version of ToPoS.' ) );
+$directory->line( '10574/',           array( 'Description' => 'Everything within this prefix' ), true );
+$directory->line( 'reference_manual', array( 'Description' => 'The official reference manual for this service' ) );
+$directory->line( 'search',           array( 'Description' => 'Search' ) );
 $directory->end();

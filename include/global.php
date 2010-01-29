@@ -21,8 +21,8 @@ set_include_path(get_include_path() . PATH_SEPARATOR . dirname(__FILE__) );
 require_once('REST/REST.php');
 REST::handle_method_spoofing();
 REST::setHTML(
-  array('CatchPlus', 'html_start'),
-  array('CatchPlus', 'html_end')
+  array('CP', 'html_start'),
+  array('CP', 'html_end')
 );
 
 //$debug = fopen(dirname(__FILE__) . '/debug.txt', 'a');
@@ -43,6 +43,7 @@ function sara_exception_handler(Exception $e) {
 }
 set_exception_handler('sara_exception_handler');
 
-
-require_once 'catchplus.php';
-require_once 'catchplus_mysql.php';
+require_once 'cp_passwd.php';
+require_once 'cp_mysql.php';
+require_once 'cp.php';
+require_once 'cp_handle.php';
