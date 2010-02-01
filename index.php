@@ -21,8 +21,18 @@ REST::require_method('HEAD', 'GET');
 if (!empty($_SERVER['HTTP_IF_MODIFIED_SINCE']))
   REST::fatal(REST::HTTP_NOT_MODIFIED);
   
-$directory = RESTDir::factory()->setHeaders('Description');
-$directory->line( '10574/',           array( 'Description' => 'Everything within this prefix' ), true );
+$directory = RESTDir::factory()->setHeaders('Description')->setForm( <<<EOS
+<form action="" method="get" onsubmit="this.action = '/catchplus/' + this.elements.handle.value; this.elements.handle.parentNode.removeChild(this.elements.handle); return true;">
+<h2>Resolve a handle</h2>
+<div>
+Handle: <input type="text" name="handle" />
+<input type="checkbox" id="id_handle" name="redirect" value="no" />No redirect<br />
+<input type="submit" />
+</div>
+</form>
+EOS
+);
+#$directory->line( '10574/',           array( 'Description' => 'Everything within this prefix' ) );
 $directory->line( 'reference_manual', array( 'Description' => 'The official reference manual for this service' ) );
-$directory->line( 'search',           array( 'Description' => 'Search' ) );
+$directory->line( 'search',           array( 'Description' => 'Search for a set of handles' ) );
 $directory->end();

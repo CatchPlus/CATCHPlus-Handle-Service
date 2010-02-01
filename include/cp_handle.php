@@ -106,11 +106,29 @@ public $pub_write;
  */
 public function __construct($handle) {
   $this->handle = strtoupper($handle);
-  $this->type = array(100 => 'HS_ADMIN');
-  $this->data = array(100 => pack('H*', '0FF20000000A302E4E412F31303537340000012C0000'));
-  $this->ttl_type = $this->ttl = $this->timestamp = $this->refs =
-    $this->admin_read = $this->admin_write = $this->pub_read = $this->pub_write =
-    array();
+//  $this->type = array(100 => 'HS_ADMIN');
+//  $this->data = array(100 => pack('H*', '0FF20000000A302E4E412F31303537340000012C0000'));
+  $this->type = $this->data = $this->ttl_type = $this->ttl = $this->timestamp =
+    $this->refs = $this->admin_read = $this->admin_write = $this->pub_read =
+    $this->pub_write = array();
+}
+
+
+/**
+ * Forces the presence of an HS_ADMIN field.
+ * @return void
+ */
+private function force_hs_admin() {
+  $max_idx = 0;
+  foreach ($this->type as $idx => $type)
+    if ($type == 'HS_ADMIN')
+      return;
+    elseif ((int)$idx > $max_idx)
+      $max_idx = (int)$idx;
+  $max_idx++;
+  if ($max_idx < 100) $max_idx = 100;
+  $this->type[$max_idx] = 'HS_ADMIN';
+  $this->data[$max_idx] = pack('H*', '0FF20000000A302E4E412F31303537340000012C0000');
 }
 
 
@@ -143,14 +161,15 @@ VALUES (
 );
 EOS
       );
-      $p_idx = $p_type = $p_data = $p_ttl_type = $p_ttl = $p_timestamp
-             = $p_refs = $p_admin_read = $p_admin_write = $p_pub_read
-             = $p_pub_write = null;
-      self::$create_stmt->bind_param(
-        'sissiiisiiii', $this->handle,
-        $p_idx, $p_type, $p_data, $p_ttl_type, $p_ttl, $p_timestamp, $p_refs,
-        $p_admin_read, $p_admin_write, $p_pub_read, $p_pub_write
-      );
+    $p_idx = $p_type = $p_data = $p_ttl_type = $p_ttl = $p_timestamp
+           = $p_refs = $p_admin_read = $p_admin_write = $p_pub_read
+           = $p_pub_write = null;
+    self::$create_stmt->bind_param(
+      'sissiiisiiii', $this->handle,
+      $p_idx, $p_type, $p_data, $p_ttl_type, $p_ttl, $p_timestamp, $p_refs,
+      $p_admin_read, $p_admin_write, $p_pub_read, $p_pub_write
+    );
+    $this->force_hs_admin();
     foreach ($this->type as $p_idx => $p_type) {
       $p_data = (string)(@$this->data[$p_idx]);
       if (!isset($this->ttl_type[$p_idx])) $this->ttl_type[$p_idx] = 0;

@@ -20,7 +20,7 @@ require_once( 'include/global.php' );
 
 // Parse the PATH_INFO string, if present:
 if ( empty($_SERVER['PATH_INFO']) ||
-     !preg_match( '@^/(\d+)/(.*)$@',
+     !preg_match( '@^/(\d+)/(.+)$@',
                  $_SERVER['PATH_INFO'], $matches ) )
   throw new Exception("Bad PATH_INFO");
 $CP_PREFIX = @$matches[1];
@@ -127,13 +127,14 @@ if ( $_SERVER['REQUEST_METHOD'] === 'PUT' ||
   
   // Check user-supplied precondition (create or update):
   if ( ( $_SERVER['REQUEST_METHOD'] === 'PUT' &&
-         $_GET['mode'] === 'create' ) &&
+         @$_GET['mode'] === 'create' ) &&
        $handle->read() )
     REST::fatal(REST::HTTP_PRECONDITION_FAILED, 'Handle exists.');
-  if ( $_SERVER['REQUEST_METHOD'] === 'PUT' &&
-       $_GET['mode'] === 'update' &&
+  elseif ( $_SERVER['REQUEST_METHOD'] === 'PUT' &&
+       @$_GET['mode'] === 'update' &&
        !$handle->delete() )
     REST::fatal(REST::HTTP_PRECONDITION_FAILED, 'Handle doesn\'t exist.');
+  else $handle->delete();
     
   // Store the data...
   $handle->create();
@@ -237,10 +238,13 @@ else {
 </tr>
 EOS;
     foreach ($handle->type as $idx => $type) {
+      if (strpos($type, 'HS_') === 0) continue;
       echo '<tr><td class="idx">' . $idx . '</td><td class="type">' .
         htmlspecialchars($type, ENT_COMPAT, 'UTF-8') . '</td><td class="data">';
       if ($type == 'URL' && REST::isValidURI($handle->data[$idx]) )
         echo '<a href="' . $handle->data[$idx] . '">' . htmlspecialchars($handle->data[$idx]) . '</a>';
+      elseif ($type == 'EMAIL' )
+        echo '<a href="mailto:' . $handle->data[$idx] . '">' . htmlspecialchars($handle->data[$idx]) . '</a>';
       else
         echo $handle->data[$idx] === mb_convert_encoding( 
                mb_convert_encoding( $handle->data[$idx], 'UTF-32', 'UTF-8' ),
@@ -259,7 +263,7 @@ EOS;
   elseif ($content_type == 'application/json') {
     $json = array();
     foreach ($handle->type as $idx => $type)
-      if ($type != 'HS_ADMIN')
+      if (strpos($type, 'HS_') !== 0) // Was: $type != 'HS_ADMIN'
         $json[$idx] = array(
           // De velden die het interne authorisatie-systeem van Handle betreffen
           // heb ik uitgecommentarieerd, omdat deze service (voorlopig) helemaal
@@ -282,7 +286,7 @@ EOS;
   elseif ($content_type == 'application/x-www-form-urlencoded') {
     $pairs = array();
     foreach ($handle->type as $idx => $type)
-      if (strstr($type, 'HS_') !== 0) {
+      if (strpos($type, 'HS_') !== 0) {
         $pairs[] = urlencode("type[$idx]") . '=' . urlencode($type);
         $pairs[] = urlencode("data[$idx]") . '=' . urlencode($handle->data[$idx]);
         $pairs[] = urlencode("timestamp[$idx]") . '=' . urlencode($handle->timestamp[$idx]);
