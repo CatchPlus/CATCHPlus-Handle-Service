@@ -38,26 +38,26 @@ if ( $_SERVER['REQUEST_METHOD'] === 'PUT' ||
   // If it's a POST request, the PATH_INFO string contains a "template". We must
   // convert the template in a proper, unique Handle:
   if ( $_SERVER['REQUEST_METHOD'] === 'POST' ) {
-    // A template is a Handle containing an asterisk '*' character. The user can
-    // set eir own escape character:
-    $escape = isset($_GET['escape']) ? $_GET['escape'] : '\\';
-    if (strlen($escape) !== 1)
-      REST::fatal(REST::HTTP_BAD_REQUEST, 'Invalid escape character');
-    $escape = preg_quote($escape);
+    // A template is a Handle containing an asterisk '*' character.
+    // The user can set eir own escape character:
+//    $escape = isset($_GET['escape']) ? $_GET['escape'] : '\\';
+//    if (strlen($escape) !== 1)
+//      REST::fatal(REST::HTTP_BAD_REQUEST, 'Invalid escape character');
+//    $escape = preg_quote($escape);
     
     // We use mysql's UUID function to create a unique string:
     $result = CP_MySQL::query('SELECT UUID()');
     $row = $result->fetch_row();
     // remove all non-hexadecimal characters (mysql adds dashes):
-    $uuid = preg_replace('/[^\\da-f]/gi', '', $row[0]);
+    $uuid = preg_replace('/[^\\da-f]/i', '', $row[0]);
     $result->free();
     
     // Parse the template and replace the asterisk with the new $uuid:
-    if (!preg_match("/^((?:[^{$escape}]|{$escape}.)*)\\*((?:[^{$escape}]|{$escape}.)*)\$/s", $CP_SUFFIX, $matches))
+    if (!preg_match("/^((?:[^~]|~.)*)\\*((?:[^~]|~.)*)\$/s", $CP_SUFFIX, $matches))
       REST::fatal(REST::HTTP_BAD_REQUEST, 'Invalid Handle template');
     $CP_SUFFIX =
-      preg_replace("/{$escape}/", '', $matches[1]) . $uuid .
-      preg_replace("/{$escape}/", '', $matches[2]);
+      preg_replace("/~(.)/", '$1', $matches[1]) . $uuid .
+      preg_replace("/~(.)/", '$1', $matches[2]);
   }
   
   // OK, let's parse the input. We accept form data...
@@ -174,7 +174,8 @@ else {
   // The client can suppress this behaviour by sending a redirect=no query
   // parameter:
   if ( !isset($_GET['redirect']) ||
-       !in_array($_GET['redirect'], array('no', 'false', '0')) ) {
+       !in_array( strtolower($_GET['redirect']),
+                  array('', 'no', 'false', '0') ) ) {
     // The client MAY specify an index=n query parameter, to select a specific
     // URL:
     $index = isset($_GET['index']) ? (int)$_GET['index'] : null;
