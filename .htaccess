@@ -5,7 +5,7 @@ AuthType Basic
 AuthName "CATCHPlus Handle System RESTful Web Service"
 # (Following line optional)
 AuthBasicProvider file
-AuthUserFile /space/catchplus/www/.htpasswd
+AuthUserFile /space/catchplus/plus/.htpasswd
 Require valid-user
 
 RewriteEngine on
@@ -46,8 +46,8 @@ RewriteRule ^search$ /catchplus/search.php [L]
 # The following three lines guarantee that handle.php is invoked with a
 # syntactically valid handle in the $PATH_INFO:
 # If handle.php is invoked...
-RewriteCond %{REQUEST_URI} ^/catchplus/handle.php
+RewriteCond %{REQUEST_URI} ^/catch(?:plus|test|devel)/handle.php
 # without a proper handle in its PATH_INFO...
-RewriteCond %{REQUEST_URI} !^/catchplus/handle.php/\d+/.+
+RewriteCond %{REQUEST_URI} !^/catch(?:plus|test|devel)/handle.php/\d+/.+
 # then return an HTTP/1.1 403 Forbidden:
 RewriteRule .* - [F]
