@@ -9,7 +9,7 @@ AuthUserFile /space/catchplus/plus/.htpasswd
 Require valid-user
 
 RewriteEngine on
-
+RewriteBase /catchdevel/
 # Forbidden:
 #RewriteCond %{REMOTE_ADDR} !^145\.100\.(?:6|7|15)\.
 #RewriteRule ^realms/$ - [F]
@@ -28,7 +28,7 @@ RewriteRule ^reference_manual http://docs.google.com/Doc?docid=0AV1_-ddi0ofuZGNt
 RewriteRule ^/$ /catchplus/index.php [L]
 #RewriteRule ^((?:[^./]+\.)*[^./]+)/(.*)$ /catchplus/handle.php/$1/$2 [L]
 RewriteRule ^(\d+)/(.+)$ /catchplus/handle.php/$1/$2 [L]
-RewriteRule ^search$ /catchplus/search.php [L]
+RewriteRule ^search$ search.php [L]
 #RewriteRule ^newPool/?$ /4/newPool.php [L]
 #RewriteRule ^phpinfo(/.*)?$ /4/phpinfo.php [L]
 #RewriteRule ^pools/$ /4/pools.php/$1 [L]
