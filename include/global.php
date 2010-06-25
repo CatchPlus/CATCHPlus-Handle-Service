@@ -25,13 +25,9 @@ REST::setHTML(
   array('CP', 'html_end')
 );
 
-//$debug = fopen(dirname(__FILE__) . '/debug.txt', 'a');
-//fwrite($debug, "\n\n" . var_export($_SERVER, true));
-//fclose($debug);
-
-//session_name('aanwezigheidsbord');
-//session_set_cookie_params( 0, dirname($_SERVER['SCRIPT_NAME']) );
-//session_start();
+$debug = fopen(dirname(__FILE__) . '/debug.txt', 'a');
+fwrite($debug, "\n\n" . var_export(array($_SERVER, $_POST, $_GET), true));
+fclose($debug);
 
 date_default_timezone_set('Europe/Amsterdam');
 

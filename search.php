@@ -105,10 +105,18 @@ call_user_func_array(
 
 // Execute query
 if (!$search_stmt->execute()) {
-  throw new CP_MySQL_Exception(
-    CP_MySQL::mysql()->error,
-    CP_MySQL::mysql()->errno
-  );
+  switch ( CP_MySQL::mysql()->errno ) {
+  case 1139:
+    REST::fatal(
+      REST::HTTP_BAD_REQUEST,
+      CP_MySQL::mysql()->error
+    );
+  default:
+    throw new CP_MySQL_Exception(
+      CP_MySQL::mysql()->error,
+      CP_MySQL::mysql()->errno
+    );
+  }
 }
 
 // Bind results to a variable
