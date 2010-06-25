@@ -26,7 +26,7 @@ REST::setHTML(
 );
 
 //$debug = fopen(dirname(__FILE__) . '/debug.txt', 'a');
-//fwrite($debug, "\n\n" . var_export($_SERVER, true));
+//fwrite($debug, "\n\n" . var_export(array($_SERVER, $_POST, $_GET), true));
 //fclose($debug);
 
 //session_name('aanwezigheidsbord');
